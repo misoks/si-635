@@ -12,12 +12,6 @@ function brine_submit_menu() {
 }
 
 function brine_submit_start() {
-	/*echo t("Brine is always looking for new contributors from whom we can systematically 
-		drain all comedic content. If you would like to become one of our subjects/victims,
-		we welcome you to submit any ideas you might have! You can submit anything you want--
-		full works, abstracts, or just individual jokes and ideas. Everything will be taken
-		into consideration by our staff of trained joke professionals, and if we like what we
-		see, we'll publish it!");*/
 	return drupal_get_form('brine_submit_form');
 }
 
@@ -84,11 +78,8 @@ function brine_submit_form_submit ($form, &$form_state) {
 	
     $file = file_load($form_state['values']['file']);
     if ($file) {
-        // Change status to permanent.
         $file->status = FILE_STATUS_PERMANENT;
-        // Save.
         file_save($file);
-        // Record that the module (in this example, user module) is using the file.
     }
     
 	$name = check_plain($form_state['values']['name']);
@@ -110,13 +101,6 @@ function brine_submit_form_submit ($form, &$form_state) {
 	drupal_set_message(t("Thanks for submitting! We'll review your stuff and get back to you ASAP."));
 	drupal_goto('node/'.$node->nid);
     
-    mail(
-        'cathy.a.fisher@gmail.com' , 
-        'New submission!' , 
-        "New $type has been submitted. Review it 
-            <a href='http://foryourhealth.cms-dev.si.umich.edu/node/$nid'>here</a>.");
-    notification($node->nid, $type);
-    
 }
 
 function brine_submit_new_node( $name, $email, $type, $title, $text, $file) {
@@ -134,48 +118,4 @@ function brine_submit_new_node( $name, $email, $type, $title, $text, $file) {
     }
 	node_save($node);
 	return $node;
-}
-
-function brine_submit_mail($key, &$message, $params) {
-    if (isset($params['subject'])) {
-        $message['subject'] = $params['subject'];
-    }
-    if (isset($params['body'])) {
-        $message['body'][] = $params['body'];
-    }
-    if (isset($params['headers']) && is_array($params['headers'])) {  
-        $message['headers'] += $params['headers'];
-    }
-}
-
-function notification($nid, $type) {
-/* Tried using Drupal mail, but it was way to complex/convoluted for what I needed to do
-    $module = 'brine_submit';
-    $key = 'key';
-    $email = 'cathy.a.fisher@gmail.com';
-    $language = language_default();
-    $params = array();
-    $from = NULL;
-    $send = TRUE;
-    $message = drupal_mail($module, $key, $email, $language, $params, $from, $send);
-
-    $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed';
-    $message['subject'] = 'New submission!';
-    $message['body'] = array();
-    $message['body'][] = "New $type has been submitted. Review it ".l('here', 'node/'.$node->nid).' .';
-
-    // Retrieve the responsible implementation for this message.
-    $system = drupal_mail_system($module, $key);
-
-    // Format the message body.
-    $message = $system->format($message);
-
-    // Send e-mail.
-    $message['result'] = $system->mail($message);
-*/
-    mail(
-        'cathy.a.fisher@gmail.com' , 
-        'New submission!' , 
-        "New $type has been submitted. Review it 
-            <a href='http://foryourhealth.cms-dev.si.umich.edu/node/$nid'>here</a>.");
 }
