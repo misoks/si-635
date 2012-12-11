@@ -1,48 +1,8 @@
-/* Drupal 7 Framework - Created by André Griffin
-------------------------------------------------
-[Table of contents]
-
- 0.Reset
- 1.Global
- 2.Layout
- 3.Main
- 4.Sidebars
- 5.Header
- 6.Navigation
- 7.Nodes
- 8.Comments
- 9.Blocks
-10.Footer
-11.CSS Support
-
-Font sizes: 16px base font with 24px line-height
-------------------------------------------------
-       font-size / line-height / margin-top
-------------------------------------------------
-40px = 2.5em     / 1.2         / 0.6em
-32px = 2em       / 1.5         / 0.75em
-24px = 1.5em     / 1           / 1em
-20px = 1.25em    / 1.2         / 1.2em
-16px = 1em       / 1..5        / 1.5em
-14px = 0.875em   / 1.7143      / 1.7143em
-13px = 0.8125em  / 1.8462      / 1.8462em
-12px = 0.75em    / 2           / 2em
-10px = 0.625em   / 2.4         / 2.4em
-
-Equation for font sizing: 
-  Desired px ÷ Default (or parent) px = em size
-------------------------------------------------*/
-
-/**
- * 0.RESET 
- */
-
-
 /**
  * 1.GLOBAL
  */
 
-html {-webkit-font-smoothing: antialiased}
+html {-webkit-font-smoothing: antialiased; }
 body {
   background: #fff;
   color: #222;
@@ -91,21 +51,6 @@ a:hover, a:active, li a.active  { color: black; }
 a:focus { outline: thin dotted; }
 a:hover, a:active { outline: 0; }
 
-/* apply common styling after reset.css */
-
-li ul, li ol {  margin: 0; }
-ul, ol {  margin: 0 1.5em 1.5em 0;  padding-left: 1.5em; }
-ul {  list-style-type: disc; }
-ol {  list-style-type: decimal; }
-dl {  margin: 0 0 1.5em 0; }
-dl dt {  font-weight: bold; }
-dd {  margin-left: 1.5em; }
-hr {  background: #666;  border: none;  clear: both;  float: none;  height: 1px;  margin: 0 0 1.4375em;  width: 100%; }
-fieldset {  border: 1px solid #ccc;  margin: 0 0 1.4375em;  padding: 1.5em; }
-table {  margin-bottom: 1.5em;  width: 100%; }
-th, tr, td {  vertical-align: middle; }
-th { padding-right: 1em; }
-.sticky-header th, .sticky-table th {  border-bottom: 3px solid #ccc;  padding-right: 1em;  text-align: left; }
 
 .page-node img {
     max-width: 100%;
@@ -987,31 +932,15 @@ li.pager-previous a:hover {
   top: 1.6667em;
 }
 
-/**
- * 11.CSS SUPPORT
- *
- * Built-in classes:
- * .clearfix                            | contain floats
- * .element-invisible                   | hide element visually
- * .element-invisible.element-focusable | allow element to be focusable when navigated to via keyboard
- * .element-hidden                      | hide visually and from screenreaders
- */
- 
-/* clear floats */
-.clear { clear: both; }
 
-/* display block */
-.display-block { display: block; }
-
-}
 
 @media all and (min-width: 768px) and (min-height: 850px) {
-.page-taxonomy #main h1 {
-    top: -85px;
-}
-.page-taxonomy .view-content {
-    margin-top: 90px;
-}
+    .page-taxonomy #main h1 {
+        top: -85px;
+    }
+    .page-taxonomy .view-content {
+        margin-top: 90px;
+    }
 }
 
 .tabs-wrapper {
