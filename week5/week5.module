@@ -1,0 +1,251 @@
+<?php
+
+function week5_menu() {
+	$items =  array();
+	$items['week5'] = array(
+		'title'=>'TweetLibs',
+		'description'=>'Build tweets for fun and pleasure.',
+		'page callback'=>'week5_start',
+		'access callback'=>TRUE,
+	);
+	return $items;
+}
+function week5_start() {
+    return drupal_get_form('week5_form');
+}
+function week5_form($form_state) {
+    $form = array();
+    $form['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Name'),
+        '#required' => TRUE,
+    );
+    $form['waiver'] = array(
+        '#type' => 'select',
+        '#title' => t('Do you agree to have your opinions published on the Internet?'),
+        '#options' => array(
+            0 => t('No'),
+            1 => t('Yes'),
+        ),
+        '#default_value' => 0,
+        '#required' => TRUE,
+    );
+    $form['topic'] = array(
+        '#type' => 'radios',
+        '#title' => t('What topic would you like to tweet about?'),
+        '#options' => array(
+            0 => t('Politics'),
+            1 => t('Dogs'),
+            2 => t('Fall'),
+            3 => t('Personal or existential issues'),
+            4 => t('Food'),
+            5 => t('Gas prices'),
+       ),        
+        '#required' => TRUE,
+    );
+    $form['emotion'] = array(
+        '#type' => 'radios',
+        '#title' => t('How do you feel about that topic?'),
+        '#options' => array(
+            0 => t('Happy'),
+            1 => t('Angry'),
+            2 => t('Ambivalent'),
+            3 => t('Disaffected'),
+            4 => t('Frustrated'),
+            5 => t('Relieved'),
+       ),        
+        '#required' => TRUE,
+    );
+    $form['mention'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Would you like to mention another Twitter user?'),
+        '#field_prefix' => '@',
+        '#required' => FALSE,
+    );
+    $form['cabinet'] = array(
+        '#type' => 'radios',
+        '#title' => t('Which cabinet member would you like to mention?'),
+        '#options' => array(
+            1 => t('Hilda Solis'),
+            2 => t('Eric Holder'),
+            3 => t('Ray H. LaHood'),
+            4 => t('Arne Duncan'),
+       ),        
+        '#required' => FALSE,
+    );
+    $form['horse'] = array(
+        '#type' => 'radios',
+        '#title' => t('Horse:'),
+        '#options' => array(
+            0 => t('Off'),
+            1 => t('On'),
+        ),
+        '#default_value' => 0,
+        '#required' => TRUE,
+    );
+    $form['capitalization'] = array(
+       '#type' => 'select',
+       '#title' => t('What case do you want your tweet to be in?'),
+       '#options' => array(
+            0 => t('Regular'),
+            1 => t('All caps'),
+            2 => t('All lowercase'),
+       ),
+       '#default_value' => 0,
+       '#required' => TRUE,
+   );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Tweet it!')
+    );
+    return $form;   
+}
+
+function week5_form_validate ($form, &$form_state) {
+    if ($form_state['values']['name'] == 'Cathy') {
+        form_set_error('name', t('Please choose another name!'));
+    }
+    if ($form_state['values']['waiver'] == 0) {
+        form_set_error('waiver', t('Agree to have your opinion posted if you want to use TweetLibs!'));
+    }
+    if (($form_state['values']['topic'] == 0) && ($form_state['values']['emotion'] == 5)) {
+        form_set_error('emotion', t('You may not be relieved about politics.'));
+    }
+    if ($form_state['values']['mention'] == 'raylahood') {
+        form_set_error('mention', t('You may not mention Secretary of Transportation Raymond H. "Ray" LaHood.'));
+    }
+}
+
+function week5_form_submit ($form, &$form_state) {
+    $topic_pick = rand(1, 3);
+    $emotion_pick = rand(1, 3);
+    
+    $name = check_plain($form_state['values']['name']);
+    $caps = check_plain($form_state['values']['capitalization']);
+    
+    $topic_raw = check_plain($form_state['values']['topic']);
+        if ($topic_raw == 0) {
+            $topic1 = "that Obama dude";
+            $topic2 = "that Mitt Romney fellow";
+            $topic3 = "binders full of women";
+        }
+        elseif ($topic_raw == 1) {
+            $topic1 = "happy puppies";
+            $topic2 = "ravenous hounds";
+            $topic3 = "ugly terriers";
+        }
+        elseif ($topic_raw == 2) {
+            $topic1 = "cool weather and changing leaves";
+            $topic2 = "the relentless approach of Winter";
+            $topic3 = "wearing layers";
+        }
+        elseif ($topic_raw == 3) {
+            $topic1 = "how I feel about my life and future";
+            $topic2 = "the inevitability of death";
+            $topic3 = "the meaninglessness of existence";
+        }
+        elseif ($topic_raw == 4) {
+            $topic1 = "this banh mi";
+            $topic2 = "hearty stews";
+            $topic3 = "fresh pig thalmus gland";
+        }
+        elseif ($topic_raw == 5) {
+            $topic1 = "what we're paying at the pump";
+            $topic2 = "filling up my tank";
+            $topic3 = "OPEC";
+        }
+    
+    $emotion_raw = check_plain($form_state['values']['emotion']);
+        if ($emotion_raw == 0) {
+            $emotion1 = "pleased as punch";
+            $emotion2 = "overjoyed";
+            $emotion3 = "tickled pink";
+        }
+        elseif ($emotion_raw == 1) {
+            $emotion1 = "just furious";
+            $emotion2 = "enraged";
+            $emotion3 = "burning with intense hatred";
+        }
+        elseif ($emotion_raw == 2) {
+            $emotion1 = "like I could go either way";
+            $emotion2 = "undecided";
+            $emotion3 = "unopinionated";
+        }
+        elseif ($emotion_raw == 3) {
+            $emotion1 = "absolutely nothing";
+            $emotion2 = "emotionless";
+            $emotion3 = "completely dead inside";
+        }
+        elseif ($emotion_raw == 4) {
+            $emotion1 = "like I could strangle someone";
+            $emotion2 = "tooth be-gritted";
+            $emotion3 = "sexually frustrated";
+        }
+        elseif ($emotion_raw == 5) {
+            $emotion1 = "so relieved";
+            $emotion2 = "100% mollified";
+            $emotion3 = "emotionally soothed";
+        } 
+    if ($topic_pick == 1) {
+        $topic = $topic1;
+    }
+    elseif ($topic_pick == 2) {
+        $topic = $topic2;
+    }
+    elseif ($topic_pick == 3) {
+        $topic = $topic3;
+    }
+    if ($emotion_pick == 1) {
+        $emotion = $emotion1;
+    }
+    elseif ($emotion_pick == 2) {
+        $emotion = $emotion2;
+    }
+    elseif ($emotion_pick == 3) {
+        $emotion = $emotion3;
+    }
+    
+    $mention_raw = check_plain($form_state['values']['mention']);
+    if ($mention_raw != FALSE) {
+        $mention = 'What do you think, @'.$mention_raw.'?';
+    }
+    else {
+        $mention = '';
+    }
+    
+    $cab = check_plain($form_state['values']['cabinet']);
+    if ($cab == 1) {
+        $secmention = '@HildaSolisDOL';
+    }
+    elseif ($cab == 2) {
+        $secmention = '@RealEricHolder';
+    }
+    elseif ($cab == 3) {
+        $secmention = '@raylahood';
+    }
+    elseif ($cab == 4) {
+        $secmention = '@arneduncan';
+    }
+    else {
+        $secmention = '';
+    }
+    
+    $msg = t("@name says: I feel @emotion about @topic. @mention @secmention", 
+            array('@name' => $name, '@emotion' => $emotion, '@topic' => $topic, '@mention' => $mention, '@secmention' => $secmention));
+    
+    $horse = check_plain($form_state['values']['horse']);
+    if ($horse == 1) {
+        $mention = '[snort] @'.$mention_raw;
+        $msg = "$mention $secmention Neigh neigh neeeiiiiigh neigh neiggh neiigh. [whinny]";
+    }
+    
+    if ($caps == '1') {
+        $msg = strtoupper($msg);
+    }
+    elseif ($caps == '2') {
+        $msg = strtolower($msg);
+    }
+    si635helper_twitter($msg);
+    $link = l(t('SI 635 Twitter account'), 'http://www.twitter.com/si635');
+    drupal_set_message(t("You tweeted: '$msg' See it at the $link."), 'status');
+}

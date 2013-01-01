@@ -1,0 +1,69 @@
+<?php
+/*function week10_action_info() {
+	return array(
+	    'week10_mesg' => array(
+	    'type'=>'node',
+	    'label'=>t('put msg on screen'),
+	    'triggers'=>array('any'),
+	    ),
+	);
+}
+*/
+function week11_mesg($object) {
+	drupal_set_message('The weather in Ann Arbor is ' . $object['temp'] .' and '. $object['txt']);
+}
+/*
+function week10_node_update($node) {
+    $object = si635helper_weather('KARB');
+    $node->field_temperature['und'][0]['value'] = $object['temp'];
+    $node->field_weather['und'][0]['value'] = $object['txt'];
+    dsm($node);
+	week10_mesg($object);
+}
+
+function week10_node_insert($node) {
+    $object = si635helper_weather('KARB');
+    $node->field_temperature['und'][0]['value'] = $object['temp'];
+    $node->field_weather['und'][0]['value'] = $object['txt'];
+    dsm($node);
+	week10_mesg($object);
+}*/
+
+function week11_block_info() {
+    $blocks['time'] = array(
+        'info' => t('Current Time'), 
+        'cache' => DRUPAL_NO_CACHE,
+    );
+    $blocks['frontpage'] = array(
+        'info' => t('Front Page')
+    );
+    $blocks['weather'] = array(
+        'info' => t('Local Weather')
+    );
+    return $blocks;
+}
+
+function week11_block_view($delta = '') {
+$block = array();
+
+  switch ($delta) {
+    case 'time':
+      $block['subject'] = t('Current Time');
+      $block['content'] = t(date('r'));
+      break;
+
+    case 'frontpage':
+      $block['subject'] = t('Front Page');
+      $block['content'] = l(t('Take me to the front page'), 'http://misoks.cms-dev.si.umich.edu');
+      break;
+  
+    case 'weather':
+        $block['subject'] = t('Current Weather');
+        $object = si635helper_weather('KARB');
+        $temp = $object['temp'];
+        $txt = $object['txt'];
+        $block['content'] = "It's currently $temp degrees and $txt in Ann Arbor.";
+        break; 
+    }    
+    return $block;
+}

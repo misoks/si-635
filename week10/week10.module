@@ -1,0 +1,30 @@
+<?php
+function week10_action_info() {
+	return array(
+	    'week10_mesg' => array(
+	    'type'=>'node',
+	    'label'=>t('put msg on screen'),
+	    'triggers'=>array('any'),
+	    ),
+	);
+}
+
+function week10_mesg($object) {
+	drupal_set_message('The weather in Ann Arbor is ' . $object['temp'] .' and '. $object['txt']);
+}
+
+function week10_node_update($node) {
+    $object = si635helper_weather('KARB');
+    $node->field_temperature['und'][0]['value'] = $object['temp'];
+    $node->field_weather['und'][0]['value'] = $object['txt'];
+    dsm($node);
+	week10_mesg($object);
+}
+
+function week10_node_insert($node) {
+    $object = si635helper_weather('KARB');
+    $node->field_temperature['und'][0]['value'] = $object['temp'];
+    $node->field_weather['und'][0]['value'] = $object['txt'];
+    dsm($node);
+	week10_mesg($object);
+}

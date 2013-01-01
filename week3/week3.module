@@ -1,0 +1,25 @@
+<?php
+function week3_menu() {
+	$items =  array();
+	$items['cusses/%'] = array(
+		'title'=>'CussZone',
+		'description'=>'CussZone',
+		'page callback'=>'week3_hw(%)',
+		'page arguments'=>array(1),
+		'access callback'=>TRUE,
+	);
+
+	return $items;
+
+}
+
+
+function week3_hw($var) {
+
+	$out = t("Damn and drat and shit. These are some cusses we all enjoy. You contributed: ",array('%name'=>$var));
+		return $out;
+}
+function week3_hw2() {
+
+	return t("hello world 2");
+}

@@ -1,0 +1,15 @@
+<?php
+
+function updatetweet_node_submit($node, $form, &$form_state) {
+    if ($node->type == 'event') {
+        $title = $node->title['und'][0]['value'];
+        $status = $node->field_status['und'][0]['value'];
+        if ( $status == 'Complete' ) {
+            $msg = "$title is complete.";
+        }
+        else {
+            $msg = "$title is still not complete.";
+        }
+        si635helper_twitter($msg);
+    }
+}

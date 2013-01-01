@@ -1,0 +1,4 @@
+name=updatetweet
+description="Sends updates to Twitter."
+core=7.x
+package=635
