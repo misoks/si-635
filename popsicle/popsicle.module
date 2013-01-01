@@ -1,0 +1,71 @@
+<?php
+
+function popsicle_menu() {
+    $menu = array();
+    $menu['popsicles'] = array(
+        'page callback' => 'popsicle_start',
+        'title' => 'Create-A-Popsicle!',
+        'access callback' => TRUE
+    );
+    return $menu;
+}
+function popsicle_start() {
+    return drupal_get_form('popsicle_new');
+}
+function popsicle_new($form, $form_state) {
+    $form = array();
+    $form['name'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Name',
+        '#required' => TRUE);
+    $form['flavor'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Flavor',
+        '#required' => TRUE);
+    $form['color'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Color',
+        '#required' => TRUE);
+    $form['kind'] = array(
+        '#type' => 'radios',
+        '#title' => t('What kind of popsicle is it?'),
+        '#options' => array(1 => t('push-up'), 2 => t('single stick'), 3 => t('double stick'), 4 => t('Fla-Vor-Ice')),        
+        '#required' => TRUE);
+    $form['submit'] = array('#type' => 'submit','#value' => 'Submit');
+    return $form;
+}
+
+function popsicle_new_submit($form, $form_state) {
+    $name = check_plain($form_state['values']['name']);
+    $flavor = check_plain($form_state['values']['flavor']);
+    $color = check_plain($form_state['values']['color']);
+    $kind_raw = check_plain($form_state['values']['kind']);
+    if ($kind_raw == 1) {
+        $kind = 'push-up';
+    }
+    elseif ($kind_raw == 2) {
+        $kind = 'single stick';
+    }
+    elseif ($kind_raw == 3) {
+        $kind = 'double stick';
+    }
+    elseif ($kind_raw == 4) {
+        $kind = 'Fla-Vor-Ice';
+    }
+    $node = popsicle_new_node($name, $flavor, $color, $kind);
+    drupal_goto('node/'.$node->nid);
+}
+
+function popsicle_new_node($name, $flavor, $color, $kind) {
+    $node = new stdclass();
+    $node->type = 'popsicle';
+    $node->status = '1';
+    $node->title = $name;
+    $node->field_flavor['und'][0]['value'] = $flavor;
+    $node->field_color['und'][0]['value'] = $color;
+    $node->field_kind['und'][0]['value'] = $kind;
+    global $user;
+    $node->uid = $user->uid;
+    node_save($node);
+    return $node;
+}

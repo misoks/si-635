@@ -1,0 +1,27 @@
+<?php
+
+function week7_menu_alter(&$items) {
+    $items['admin/modules']['title'] = t('Dumb modules');
+    $items['admin/dashboard']['title'] = t('Home');
+    $items['admin/settings']['access arguments'] = array('admin blah');
+}
+
+function week7_form_alter(&$form, &$form_state, $form_id) {
+    if ($form_id == 'user_login') {
+        $form['pass']['#title'] = t('Dumbo password');
+        $form['actions']['submit']['#type'] = none;
+    }
+    if ($form_id == 'week5_form') {
+        $form['name']['#title'] = t('Your name:');
+    }
+}
+
+function week7_permission() {
+    return array(
+    'admin blah' => array(
+      'title' => t('Administer some stuff'), 
+      'description' => t('Do some things, do not do other things.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}

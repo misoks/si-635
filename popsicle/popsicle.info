@@ -1,0 +1,4 @@
+name=popsicle
+description="This is Cathy's Week 8 homework."
+core=7.x
+package=635
